@@ -3,6 +3,8 @@ import { GlobalContext } from "../context";
 
 export default function AddBlog() {
     const [formData, setFormData] = useContext(GlobalContext);
+
+    console.log(formData);
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#fdfcfb] to-[#e2d1c3] px-4">
       <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
@@ -17,6 +19,10 @@ export default function AddBlog() {
             placeholder="Blog Title"
             className="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
             value= {formData.title}
+            onChange={(e) => setFormData({
+                ...formData,
+                title: e.target.value
+            })}
           />
           <textarea
             name="description"
@@ -27,7 +33,7 @@ export default function AddBlog() {
             value= {formData.description}
             onChange={(e) => setFormData({
                 ...formData,
-                title: e.target.value
+                description: e.target.value
             })}
           />
           <button
