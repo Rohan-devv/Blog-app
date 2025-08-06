@@ -1,27 +1,77 @@
 import { useContext } from "react";
 import { GlobalContext } from "../context";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
 
 export default function AddBlog() {
-    const [formData, setFormData] = useContext(GlobalContext);
+  const { formData, setFormData } = useContext(GlobalContext);
+  const navigate = useNavigate();
 
-    console.log(formData);
+
+  console.log(formData);
+
+
+  async function handlleBlogDataToDatabase() {
+    console.log("Function called!");
+
+    const response = await axios.post('http://localhost:3000/api/blogs/add', {
+      title: formData.title,
+      description: formData.description,
+    })
+
+
+    const result = response.data;
+
+
+    console.log(result);
+
+    if(result) {
+      setFormData({
+        title: '',
+        description: '',
+      });
+      navigate("/");
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#fdfcfb] to-[#e2d1c3] px-4">
       <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
           📝 Add a Blog
         </h1>
-        <form className="flex flex-col gap-4">
+        <form 
+         onSubmit={(e) => {
+              e.preventDefault(); // ⛔ prevents page reload
+              handlleBlogDataToDatabase();
+            }}
+            className="flex flex-col gap-4">
           <input
             name="title"
             id="title"
             type="text"
             placeholder="Blog Title"
             className="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
-            value= {formData.title}
+            value={formData.title}
             onChange={(e) => setFormData({
-                ...formData,
-                title: e.target.value
+              ...formData,
+              title: e.target.value
             })}
           />
           <textarea
@@ -30,13 +80,14 @@ export default function AddBlog() {
             placeholder="Enter Blog Description"
             rows={6}
             className="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition resize-none"
-            value= {formData.description}
+            value={formData.description}
             onChange={(e) => setFormData({
-                ...formData,
-                description: e.target.value
+              ...formData,
+              description: e.target.value
             })}
           />
           <button
+           
             type="submit"
             className="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-3 rounded-xl transition duration-200 shadow-md"
           >

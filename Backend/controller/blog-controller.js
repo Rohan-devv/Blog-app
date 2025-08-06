@@ -33,7 +33,7 @@ const addNewBlog = async (req, res) => {
 
 });
     try{
-        await newlyCreatedVlog.save();
+        await newlyCreatedBlog.save();
 
     } catch(e){
         console .log(e);
