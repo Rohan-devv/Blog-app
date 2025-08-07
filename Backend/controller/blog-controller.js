@@ -18,7 +18,7 @@ const fetchListOfBlogs =  async(req, res ) => {
         return res.status(404).json({ message : "NO blogs found" });
     }
 
-    return res.status(200).json(blogList);
+    return res.status(200).json({blogList});
 };
 
 // Add a new blog
