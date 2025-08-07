@@ -68,29 +68,28 @@ const deleteBlog = async(req,res) =>{
 };
 
 // Update a blog
-const updateBlog = async(req, res) => {
+const updateBlog = async (req, res) => {
     const id = req.params.id;
-    let updatedBlog;
     const { title, description } = req.body;
+    let updatedBlog;
 
     try {
-        const updatedBlog = await Blog.findByIdAndUpdate(id, {
-            title,description
+        updatedBlog = await Blog.findByIdAndUpdate(
+            id,
+            { title, description },
+            { new: true } // returns the updated document
+        );
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({ message: "Unable to update blog! Please try again later" });
+    }
 
-        }) 
-    }  catch(e){
+    if (!updatedBlog) {
+        return res.status(404).json({ message: "Blog not found" });
+    }
 
-            console.log(e);
-            return res.status(500).json({ message: "Unable to update blog! Please try again later" });
-        }
-        
-        if(!updatedBlog){
-            return res.status(404).json({ message: "Blog not found" });
-        }
-
-        return res.status(200).json({updatedBlog});
-
-    };
+    return res.status(200).json({ updatedBlog });
+};
 
     module.exports = {
         fetchListOfBlogs,

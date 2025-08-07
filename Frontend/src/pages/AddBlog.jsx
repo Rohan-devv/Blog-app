@@ -1,12 +1,14 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { GlobalContext } from "../context";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 
 export default function AddBlog() {
-  const { formData, setFormData } = useContext(GlobalContext);
+  const { formData, setFormData,isEdit, setIsEdit } = useContext(GlobalContext);
   const navigate = useNavigate();
+  const location = useLocation();
+
 
 
   console.log(formData);
@@ -15,7 +17,10 @@ export default function AddBlog() {
   async function handlleBlogDataToDatabase() {
     console.log("Function called!");
 
-    const response = await axios.post('http://localhost:3000/api/blogs/add', {
+    const response = isEdit ? await axios.put(`http://localhost:3000/api/blogs/update/${location.state.getCurrentBlogItem._id}`, {
+      title: formData.title,
+      description: formData.description,
+    }) : await axios.post('http://localhost:3000/api/blogs/add', {
       title: formData.title,
       description: formData.description,
     })
@@ -27,6 +32,7 @@ export default function AddBlog() {
     console.log(result);
 
     if(result) {
+      setIsEdit(false);
       setFormData({
         title: '',
         description: '',
@@ -35,6 +41,20 @@ export default function AddBlog() {
     }
 
   }
+
+  useEffect(() => {
+  console.log(location);
+  if(location.state){
+    const {getCurrentBlogItem} = location.state;
+    setIsEdit(true);
+    setFormData({
+      title: getCurrentBlogItem.title,
+      description: getCurrentBlogItem.description,
+    });
+  }
+
+  },[location])
+
 
 
 
@@ -54,8 +74,8 @@ export default function AddBlog() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#fdfcfb] to-[#e2d1c3] px-4">
       <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
-          📝 Add a Blog
-        </h1>
+      📝 {isEdit ? "Edit the Blog" : "Add a Blog"}
+    </h1>
         <form 
          onSubmit={(e) => {
               e.preventDefault(); // ⛔ prevents page reload
@@ -91,7 +111,7 @@ export default function AddBlog() {
             type="submit"
             className="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-3 rounded-xl transition duration-200 shadow-md"
           >
-            ➕ Add New Blog
+           { isEdit ? "Update Blog" : "➕ Add New Blog"}
           </button>
         </form>
       </div>
