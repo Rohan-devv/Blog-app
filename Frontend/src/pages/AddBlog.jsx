@@ -9,10 +9,7 @@ export default function AddBlog() {
   const navigate = useNavigate();
   const location = useLocation();
 
-<h1>hii</h1>
-<h1>hii</h1>
-<h1>hii</h1>
-<h1>hii</h1>
+
 
   console.log(formData);
 
