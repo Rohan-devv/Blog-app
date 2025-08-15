@@ -10,6 +10,7 @@ export default function AddBlog() {
   const location = useLocation();
 
 <h1>hii</h1>
+<h1>hii</h1>
 
   console.log(formData);
 
