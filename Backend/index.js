@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const app = express();
 app.use(cors({
-  origin: ["https://blog-app-wine-beta.vercel.app"],  // ✅ allow your Vercel site
+  origin: ["https://blog-app-git-main-rohan-pals-projects.vercel.app"],  // ✅ allow your Vercel site
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
