@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { GlobalContext } from "../context";
 import axios from "axios";
 import { useNavigate, useLocation } from 'react-router-dom';
+import { API_URL } from '../utils/api';
 
 
 export default function AddBlog() {
@@ -17,10 +18,10 @@ export default function AddBlog() {
   async function handlleBlogDataToDatabase() {
     console.log("Function called!");
 
-    const response = isEdit ? await axios.put(`http://localhost:3000/api/blogs/update/${location.state.getCurrentBlogItem._id}`, {
+    const response = isEdit ? await axios.put(`${API_URL}/update/${location.state.getCurrentBlogItem._id}`, {
       title: formData.title,
       description: formData.description,
-    }) : await axios.post('http://localhost:3000/api/blogs/add', {
+    }) : await axios.post(`${API_URL}/add`, {
       title: formData.title,
       description: formData.description,
     })

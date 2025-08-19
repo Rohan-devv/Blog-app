@@ -3,6 +3,9 @@ import { GlobalContext } from '../context';
 import axios from 'axios';
 import { FaTrash, FaEdit } from 'react-icons/fa';
 import{useNavigate} from 'react-router-dom';
+import { API_URL } from '../utils/api';
+
+
 
 
 const Home = () => {
@@ -11,7 +14,7 @@ const Home = () => {
 
   async function fetchListOfBlogs() {
     setPendingBlogs(true);
-    const response = await axios.get('http://localhost:3000/api/blogs');
+    const response = await axios.get(`${API_URL}`);
     const result = response.data;
 
     console.log(result);
@@ -30,7 +33,7 @@ const Home = () => {
   async function handleDeleteBlog(getCurrentId) {
     console.log("Deleting blog with ID:", getCurrentId);
 
-    const response = await axios.delete(`http://localhost:3000/api/blogs/delete/${getCurrentId}`);
+    const response = await axios.delete(`${API_URL}/delete/${getCurrentId}`);
     const result = response.data;
 
     if(result?.message){
