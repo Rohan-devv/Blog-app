@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Sparkles } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-export default function Login({ onSubmit, loading = false, error, title = "Welcome back", subtitle = "Sign in to continue" }) {
+const API_URL = import.meta.env.VITE_API_URL; // ✅ make sure you set this in .env
+
+export default function Login({ title = "Welcome back", subtitle = "Sign in to continue" }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
   const [showPass, setShowPass] = useState(false);
   const [touched, setTouched] = useState({ email: false, password: false });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   const emailValid = /[^\s@]+@[^\s@]+\.[^\s@]+/.test(email);
   const passValid = password.length >= 6;
@@ -18,21 +25,35 @@ export default function Login({ onSubmit, loading = false, error, title = "Welco
     e.preventDefault();
     setTouched({ email: true, password: true });
     if (!formValid || loading) return;
-    if (onSubmit) await onSubmit({ email, password, remember });
+
+    try {
+      setLoading(true);
+      setError("");
+
+      // ✅ Send request to backend
+      const res = await axios.post(`${API_URL}/auth/login`, { email, password });
+
+      // ✅ Store token in localStorage
+      localStorage.setItem("token", res.data.token);
+
+      // ✅ Redirect to blogs page
+      navigate("/getBlogs");
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.message || "Login failed. Try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-zinc-950 via-black to-zinc-900 text-white relative overflow-hidden">
+      {/* Gradient Backgrounds */}
       <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 0.6, scale: 1 }} transition={{ duration: 1.2 }} className="pointer-events-none absolute -top-40 -left-32 h-96 w-96 rounded-full blur-3xl bg-fuchsia-600/20" />
       <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 0.5, scale: 1 }} transition={{ duration: 1.4 }} className="pointer-events-none absolute -bottom-40 -right-32 h-[28rem] w-[28rem] rounded-full blur-3xl bg-cyan-500/20" />
 
       <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="w-full max-w-md"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="w-full max-w-md">
           <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl overflow-hidden">
             <div className="px-8 pt-8 pb-4 text-center relative">
               <div className="mx-auto mb-4 h-12 w-12 grid place-items-center rounded-2xl bg-gradient-to-br from-fuchsia-500/80 to-cyan-500/80 shadow-lg shadow-fuchsia-500/20">
@@ -42,7 +63,9 @@ export default function Login({ onSubmit, loading = false, error, title = "Welco
               <p className="text-sm text-zinc-300 mt-1">{subtitle}</p>
             </div>
 
+            {/* Login Form */}
             <form onSubmit={handleSubmit} className="px-8 pb-8 space-y-4">
+              {/* Email */}
               <div className="space-y-2">
                 <label htmlFor="email" className="text-sm text-zinc-300">Email</label>
                 <div className={`flex items-center gap-2 rounded-xl border bg-white/5 focus-within:bg-white/10 transition ${touched.email && !emailValid ? "border-red-500/60" : "border-white/10"}`}>
@@ -63,6 +86,7 @@ export default function Login({ onSubmit, loading = false, error, title = "Welco
                 )}
               </div>
 
+              {/* Password */}
               <div className="space-y-2">
                 <label htmlFor="password" className="text-sm text-zinc-300">Password</label>
                 <div className={`flex items-center gap-2 rounded-xl border bg-white/5 focus-within:bg-white/10 transition ${touched.password && !passValid ? "border-red-500/60" : "border-white/10"}`}>
@@ -91,6 +115,7 @@ export default function Login({ onSubmit, loading = false, error, title = "Welco
                 )}
               </div>
 
+              {/* Remember + Forgot */}
               <div className="flex items-center justify-between pt-1">
                 <label className="flex items-center gap-2 text-sm text-zinc-300 select-none cursor-pointer">
                   <input
@@ -104,6 +129,7 @@ export default function Login({ onSubmit, loading = false, error, title = "Welco
                 <button type="button" className="text-sm text-zinc-300 hover:text-white transition">Forgot password?</button>
               </div>
 
+              {/* Submit */}
               <motion.button
                 whileTap={{ scale: 0.98 }}
                 disabled={!formValid || loading}
@@ -120,18 +146,21 @@ export default function Login({ onSubmit, loading = false, error, title = "Welco
                 )}
               </motion.button>
 
+              {/* Error */}
               {error && (
                 <div className="text-xs text-red-400/90 pt-1">{error}</div>
               )}
 
+              {/* Terms + Register */}
               <p className="text-center text-xs text-zinc-400 pt-4">
                 By continuing, you agree to our <a className="underline underline-offset-4 hover:text-white" href="#">Terms</a> and <a className="underline underline-offset-4 hover:text-white" href="#">Privacy Policy</a>.
               </p>
 
-              {/* Register link */}
               <p className="text-center text-sm text-zinc-300 pt-4">
-                Don’t have an account? {" "}
-                <Link to="/register" className="text-fuchsia-400 hover:text-fuchsia-300 underline underline-offset-4">Register here</Link>
+                Don’t have an account?{" "}
+                <Link to="/register" className="text-fuchsia-400 hover:text-fuchsia-300 underline underline-offset-4">
+                  Register here
+                </Link>
               </p>
             </form>
           </div>

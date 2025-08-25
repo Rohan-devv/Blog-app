@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Sparkles } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-export default function Register({ onSubmit, loading = false, error, title = "Create an account", subtitle = "Join us today" }) {
+const API_URL = import.meta.env.VITE_API_URL; // ✅ from .env
+
+export default function Register({ title = "Create an account", subtitle = "Join us today" }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [touched, setTouched] = useState({ name: false, email: false, password: false });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   const emailValid = /[^\s@]+@[^\s@]+\.[^\s@]+/.test(email);
   const passValid = password.length >= 6;
@@ -18,8 +25,30 @@ export default function Register({ onSubmit, loading = false, error, title = "Cr
   async function handleSubmit(e) {
     e.preventDefault();
     setTouched({ name: true, email: true, password: true });
+    setError("");
+
     if (!formValid || loading) return;
-    if (onSubmit) await onSubmit({ name, email, password });
+
+    try {
+      setLoading(true);
+      const res = await axios.post(`${API_URL}/auth/register`, {
+        name,
+        email,
+        password,
+      });
+
+      // ✅ save token if backend sends
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+      }
+
+      // ✅ navigate to home (getBlogs route)
+      navigate("/getBlogs");
+    } catch (err) {
+      setError(err.response?.data?.message || "Something went wrong!");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -138,7 +167,7 @@ export default function Register({ onSubmit, loading = false, error, title = "Cr
 
               {/* Login link */}
               <p className="text-center text-sm text-zinc-300 pt-4">
-                Already have an account? {" "}
+                Already have an account?{" "}
                 <Link to="/" className="text-fuchsia-400 hover:text-fuchsia-300 underline underline-offset-4">Login here</Link>
               </p>
             </form>
