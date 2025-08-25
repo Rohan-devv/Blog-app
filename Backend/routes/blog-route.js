@@ -9,7 +9,7 @@ const{fetchListOfBlogs,
 
 
 
-     blogRouter.get('/', fetchListOfBlogs);
+     blogRouter.get('/getBlogs', fetchListOfBlogs);
      blogRouter.post('/add', addNewBlog);
      blogRouter.delete('/delete/:id', deleteBlog);
      blogRouter.put('/update/:id', updateBlog);

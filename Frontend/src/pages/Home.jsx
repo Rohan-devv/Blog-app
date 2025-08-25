@@ -14,7 +14,7 @@ const Home = () => {
 
   async function fetchListOfBlogs() {
     setPendingBlogs(true);
-    const response = await axios.get(`${API_URL}`);
+    const response = await axios.get(`${API_URL}/getBlogs`);
     const result = response.data;
 
     console.log(result);
