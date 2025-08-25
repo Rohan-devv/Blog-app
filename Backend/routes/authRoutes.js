@@ -1,13 +1,13 @@
 // routes/authRoutes.js
-import express from "express";
-import { registerUser, loginUser } from "../controllers/authController.js";
+const express = require("express");
+const { registerUser, loginUser } = require("../controller/authController");
 
-const authRouter = express.Router();
+const router = express.Router();
 
 // @route   POST /api/auth/register
-authRouter.post("/register", registerUser);
+router.post("/register", registerUser);
 
 // @route   POST /api/auth/login
-authRouter.post("/login", loginUser);
+router.post("/login", loginUser);
 
-export default authRouter;
+module.exports = router;   // ✅ export properly
