@@ -10,7 +10,7 @@ const Header = () => {
                 </h3>
                 <nav>
                     <ul className="flex gap-10">
-                        <Link to="/">
+                        <Link to="/getBlogs">
                             <li className="text-white font-medium hover:text-yellow-300 transition cursor-pointer px-3 py-1 rounded hover:bg-white/10">
                                 Home
                             </li>

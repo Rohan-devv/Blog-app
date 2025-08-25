@@ -38,7 +38,7 @@ export default function AddBlog() {
         title: '',
         description: '',
       });
-      navigate("/");
+      navigate("/getBlogs");
     }
 
   }
