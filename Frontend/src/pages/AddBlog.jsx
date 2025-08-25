@@ -18,10 +18,10 @@ export default function AddBlog() {
   async function handlleBlogDataToDatabase() {
     console.log("Function called!");
 
-    const response = isEdit ? await axios.put(`${API_URL}/update/${location.state.getCurrentBlogItem._id}`, {
+    const response = isEdit ? await axios.put(`${API_URL}/blogs/update/${location.state.getCurrentBlogItem._id}`, {
       title: formData.title,
       description: formData.description,
-    }) : await axios.post(`${API_URL}/add`, {
+    }) : await axios.post(`${API_URL}/blogs/add`, {
       title: formData.title,
       description: formData.description,
     })

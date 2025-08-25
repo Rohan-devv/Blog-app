@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('./db')
 const blogRouter = require('./routes/blog-route');
-const authRouter = require('./routes/auth-route');
+const authRouter = require('./routes/authRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -10,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/blogs', blogRouter);
+app.use('/api/auth', authRouter);
 
 app.use('/api',(req, res) => {
     res.send("API is working");

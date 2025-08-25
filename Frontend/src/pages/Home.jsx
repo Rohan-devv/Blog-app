@@ -14,7 +14,7 @@ const Home = () => {
 
   async function fetchListOfBlogs() {
     setPendingBlogs(true);
-    const response = await axios.get(`${API_URL}/getBlogs`);
+    const response = await axios.get(`${API_URL}/blogs/getBlogs`);
     const result = response.data;
 
     console.log(result);
@@ -33,7 +33,7 @@ const Home = () => {
   async function handleDeleteBlog(getCurrentId) {
     console.log("Deleting blog with ID:", getCurrentId);
 
-    const response = await axios.delete(`${API_URL}/delete/${getCurrentId}`);
+    const response = await axios.delete(`${API_URL}/blogs/delete/${getCurrentId}`);
     const result = response.data;
 
     if(result?.message){
