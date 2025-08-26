@@ -1,6 +1,6 @@
 const express = require('express');
 const blogRouter = express.Router();
-
+const authMiddleware = require("../middleware/authMiddleware");
 
 const{fetchListOfBlogs,
      addNewBlog,
@@ -9,9 +9,10 @@ const{fetchListOfBlogs,
 
 
 
-     blogRouter.get('/getBlogs', fetchListOfBlogs);
-     blogRouter.post('/add', addNewBlog);
-     blogRouter.delete('/delete/:id', deleteBlog);
-     blogRouter.put('/update/:id', updateBlog);
+     // ✅ protect all blog routes
+blogRouter.get('/getBlogs', authMiddleware, fetchListOfBlogs);
+blogRouter.post('/add', authMiddleware, addNewBlog);
+blogRouter.delete('/delete/:id', authMiddleware, deleteBlog);
+blogRouter.put('/update/:id', authMiddleware, updateBlog);
 
      module.exports = blogRouter;

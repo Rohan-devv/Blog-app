@@ -20,6 +20,11 @@ const Header = () => {
                                 Add Blog
                             </li>
                         </Link>
+                        <Link to="/">
+                            <li className="text-white font-medium hover:text-yellow-300 transition cursor-pointer px-3 py-1 rounded hover:bg-white/10">
+                                Logout
+                            </li>
+                        </Link>
                     </ul>
                 </nav>
             </div>
