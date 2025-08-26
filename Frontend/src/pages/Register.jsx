@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Sparkles } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-hot-toast"; // ✅ for notifications
 
 const API_URL = import.meta.env.VITE_API_URL; // ✅ from .env
 
@@ -44,6 +45,7 @@ export default function Register({ title = "Create an account", subtitle = "Join
 
       // ✅ navigate to home (getBlogs route)
       navigate("/getBlogs");
+      toast.success("Registration successful!");
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong!");
     } finally {

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Sparkles } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 const API_URL = import.meta.env.VITE_API_URL; // ✅ make sure you set this in .env
 
@@ -38,6 +39,7 @@ export default function Login({ title = "Welcome back", subtitle = "Sign in to c
 
       // ✅ Redirect to blogs page
       navigate("/getBlogs");
+      toast.success("Login successful!");
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || "Login failed. Try again.");
