@@ -1,7 +1,14 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Header = () => {
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");  // ✅ clear token
+        navigate("/");                     // ✅ redirect to login
+    };
+
     return (
         <header className="bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-600 shadow-lg mb-8">
             <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -20,11 +27,12 @@ const Header = () => {
                                 Add Blog
                             </li>
                         </Link>
-                        <Link to="/">
-                            <li className="text-white font-medium hover:text-yellow-300 transition cursor-pointer px-3 py-1 rounded hover:bg-white/10">
-                                Logout
-                            </li>
-                        </Link>
+                        <li
+                            onClick={handleLogout}
+                            className="text-white font-medium hover:text-yellow-300 transition cursor-pointer px-3 py-1 rounded hover:bg-white/10"
+                        >
+                            Logout
+                        </li>
                     </ul>
                 </nav>
             </div>
