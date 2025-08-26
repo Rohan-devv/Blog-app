@@ -16,32 +16,51 @@ export default function AddBlog() {
 
 
   async function handlleBlogDataToDatabase() {
-    console.log("Function called!");
+  console.log("Function called!");
 
-    const response = isEdit ? await axios.put(`${API_URL}/blogs/update/${location.state.getCurrentBlogItem._id}`, {
-      title: formData.title,
-      description: formData.description,
-    }) : await axios.post(`${API_URL}/blogs/add`, {
-      title: formData.title,
-      description: formData.description,
-    })
-
+  try {
+    const response = isEdit
+      ? await axios.put(
+          `${API_URL}/blogs/update/${location.state.getCurrentBlogItem._id}`,
+          {
+            title: formData.title,
+            description: formData.description,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+      : await axios.post(
+          `${API_URL}/blogs/add`,
+          {
+            title: formData.title,
+            description: formData.description,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
 
     const result = response.data;
-
-
     console.log(result);
 
-    if(result) {
+    if (result) {
       setIsEdit(false);
       setFormData({
-        title: '',
-        description: '',
+        title: "",
+        description: "",
       });
       navigate("/getBlogs");
     }
-
+  } catch (error) {
+    console.error("Error adding/updating blog:", error);
   }
+}
+
 
   useEffect(() => {
   console.log(location);

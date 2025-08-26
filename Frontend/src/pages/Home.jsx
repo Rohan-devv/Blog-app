@@ -13,40 +13,57 @@ const Home = () => {
   const navigate = useNavigate();
 
   async function fetchListOfBlogs() {
-    setPendingBlogs(true);
-    const response = await axios.get(`${API_URL}/blogs/getBlogs`);
-    const result = response.data;
+  setPendingBlogs(true);
+  try {
+    const response = await axios.get(`${API_URL}/blogs/getBlogs`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
 
+    const result = response.data;
     console.log(result);
 
     if (result && result.blogList && result.blogList.length) {
       setBlogList(result.blogList);
-       setPendingBlogs(false);
+    } else {
+      setBlogList([]);
     }
-
-    else {
-       setPendingBlogs(false);
-        setBlogList([]);
-    }
+  } catch (error) {
+    console.error("Error fetching blogs:", error);
+    setBlogList([]);
+  } finally {
+    setPendingBlogs(false);
   }
+}
 
-  async function handleDeleteBlog(getCurrentId) {
-    console.log("Deleting blog with ID:", getCurrentId);
+async function handleDeleteBlog(getCurrentId) {
+  console.log("Deleting blog with ID:", getCurrentId);
 
-    const response = await axios.delete(`${API_URL}/blogs/delete/${getCurrentId}`);
+  try {
+    const response = await axios.delete(
+      `${API_URL}/blogs/delete/${getCurrentId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
     const result = response.data;
-
-    if(result?.message){
+    if (result?.message) {
       fetchListOfBlogs();
     }
-
+  } catch (error) {
+    console.error("Error deleting blog:", error);
   }
+}
 
-  async function handleUpdateBlog(getCurrentBlogItem) {
-    console.log("Update this Blog:",getCurrentBlogItem );
-    navigate('/add-blog', { state:{getCurrentBlogItem} });
+async function handleUpdateBlog(getCurrentBlogItem) {
+  console.log("Update this Blog:", getCurrentBlogItem);
+  navigate("/add-blog", { state: { getCurrentBlogItem } });
+}
 
-  }
 
   useEffect(() => {
     fetchListOfBlogs();
