@@ -72,10 +72,7 @@ async function handleUpdateBlog(getCurrentBlogItem) {
   return (
   <div className="min-h-screen bg-gray-100 py-10 px-4">
     <h1 className="text-4xl font-bold text-center mb-10 text-blue-600">📝 Blog List</h1>
-    <h1 className="text-4xl font-bold text-center mb-10 text-blue-600">📝 Blog List</h1>
-    <h1 className="text-4xl font-bold text-center mb-10 text-blue-600">📝 Blog List</h1>
-     <h1 className="text-4xl font-bold text-center mb-10 text-blue-600">📝 Blog List</h1>
-     <h1 className="text-4xl font-bold text-center mb-10 text-blue-600">📝 Blog List</h1>
+    
     {pendingBlogs ? (
       <p className="text-center text-lg text-gray-500">Loading...</p>
     ) : (
