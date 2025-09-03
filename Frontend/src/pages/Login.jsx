@@ -61,7 +61,7 @@ export default function Login({ title = "Welcome back", subtitle = "Sign in to c
               <div className="mx-auto mb-4 h-12 w-12 grid place-items-center rounded-2xl bg-gradient-to-br from-fuchsia-500/80 to-cyan-500/80 shadow-lg shadow-fuchsia-500/20">
                 <Sparkles className="h-6 w-6" />
               </div>
-              
+              <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
               <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
               <p className="text-sm text-zinc-300 mt-1">{subtitle}</p>
             </div>
