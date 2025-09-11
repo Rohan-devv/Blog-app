@@ -84,9 +84,7 @@ async function handleUpdateBlog(getCurrentBlogItem) {
           >
             <h2 className="text-2xl font-semibold text-gray-800 mb-2">{blogItem.title}</h2>
             <p className="text-gray-600 mb-4">{blogItem.description}</p>
-            <p className="text-gray-600 mb-4">{blogItem.description}</p>
-            <p className="text-gray-600 mb-4">{blogItem.description}</p>
-
+            
             <div className="flex gap-4">
               <button
                 onClick={() => handleDeleteBlog(blogItem._id)}
