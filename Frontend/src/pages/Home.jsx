@@ -86,6 +86,7 @@ async function handleUpdateBlog(getCurrentBlogItem) {
             <p className="text-gray-600 mb-4">{blogItem.description}</p>
             <p className="text-gray-600 mb-4">{blogItem.description}</p>
             <p className="text-gray-600 mb-4">{blogItem.description}</p>
+            <p className="text-gray-600 mb-4">{blogItem.description}</p>
             
             <div className="flex gap-4">
               <button
