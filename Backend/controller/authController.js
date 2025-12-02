@@ -15,7 +15,8 @@ export const registerUser = async (req, res) => {
     }
 
     // hash password
-    const salt = await bcrypt.genSalt(10);
+    // ye password ko hash kar raha hai
+    const salt = await bcrypt.genSalt(10);// 10digit ka salt generate karega 
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // create new user
