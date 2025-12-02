@@ -315,9 +315,6 @@ JWT_SECRET=your_super_secret_jwt_key_here_make_it_long_and_random
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
 
 ## 👨‍💻 Author
 
